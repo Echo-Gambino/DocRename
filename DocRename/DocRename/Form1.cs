@@ -27,6 +27,10 @@ namespace DocRename
             int x_value = (Width / 2) - (title_label.Width / 2) - 3;
             title_label.Location = new Point(x_value, 10);
 
+            // Initialize info_label
+            info_label.ForeColor = System.Drawing.ColorTranslator.FromHtml("#FF0000");
+            info_label.Text = "";
+
             // Load information from memory.txt from within the project into the items of the combobox
             List<List<String>> data = MemoryManagementTool.MemoryTool.fields_LoadFromFile();
             List<ComboBox> combo_box = new List<ComboBox> { project_comboBox, name_comboBox, version_comboBox };
@@ -64,8 +68,144 @@ namespace DocRename
             return;
         }
 
+        private void project_comboBox_TextChanged(object sender, EventArgs e)
+        {
+            String project_text = project_comboBox.Text;
+
+            if (!this.illegal_character_Check(project_text, project_comboBox))
+                return;
+
+            this.fields[0] = project_text;
+
+            this.fields_ConstructFullName();
+            return;
+        }
+
+        private void name_comboBox_TextChanged(object sender, EventArgs e)
+        {
+            String name_text = name_comboBox.Text;
+
+            if (!this.illegal_character_Check(name_text, name_comboBox))
+                return;
+
+            this.fields[1] = name_text;
+
+            this.fields_ConstructFullName();
+            return;
+        }
+
+        private void version_comboBox_TextChanged(object sender, EventArgs e)
+        {
+            String version_text = version_comboBox.Text;
+
+            if (!this.illegal_character_Check(version_text, version_comboBox))
+                return;
+
+            this.fields[2] = version_text;
+
+            this.fields_ConstructFullName();
+            return;
+        }
+
+        private void date_dateTimePicker_ValueChanged(object sender, EventArgs e)
+        {
+            String tmp = date_dateTimePicker.Value.ToString();
+            this.fields[3] = ParserTool.Parser.date_FormatToNumericalValue(tmp);
+
+            this.fields_ConstructFullName();
+
+            return;
+        }
+
+        private bool illegal_character_Check(String str, ComboBox combo_box)
+        {
+            String color = "#000000"; // Black
+            String text = "";
+            bool output = true;
+
+            if (!ParserTool.Parser.isTokenValid(str))
+            {
+                color = "#FF0000"; // Red
+                text = "Field contains illegal character(s), please remove and try again";
+                output = false;
+            }
+
+            combo_box.ForeColor = System.Drawing.ColorTranslator.FromHtml(color);
+            info_label.Text = text;
+
+            return output;
+        }
+
+        private String modified_name_ConstructFullPath(String modified, String original)
+        {
+            String[] all_tokens = original.Split('\\');
+
+            String file_extension = getFileExtension(all_tokens[all_tokens.Length - 1]);
+
+            String modified_full_path = "";
+
+            for (int i = 0; i < all_tokens.Length - 1; i++)
+                modified_full_path = modified_full_path + all_tokens[i] + "\\";
+
+            modified_full_path = modified_full_path + modified + "." + file_extension;
+
+            return modified_full_path;
+        }
+
+        private String getFileExtension(String filename)
+        {
+            String[] all_tokens = filename.Split('.');
+            return all_tokens[all_tokens.Length - 1];
+        }
+
+
+
+        private void fields_Update(String[] fields)
+        {
+            this.fields = fields;
+
+            project_comboBox.Text = fields[0];
+            name_comboBox.Text = fields[1];
+            version_comboBox.Text = fields[2];
+
+            String date = ParserTool.Parser.date_FormatToDateTimePicker(fields[3]);
+            if (date != null)
+                date_dateTimePicker.Text = date;
+
+            return;
+        }
+
+        private void fields_ConstructFullName()
+        {
+            String output = "";
+            for (int i = 0; i < 4; i++)
+            {
+                if (this.fields[i] != "")
+                {
+                    if (output == "")
+                        output = this.fields[i];
+                    else
+                        output = output + "_" + this.fields[i];
+                }
+            }
+
+            preview_textBox.Text = output;
+            return;
+        }
+
         private void output_button_Click(object sender, EventArgs e)
         {
+            String preview_filename = preview_textBox.Text;
+
+            if (!ParserTool.Parser.isTokenValid(preview_filename))
+            {
+                String invalid_chars = "{ \", <, >, |, \\b, \\0, \\t }";
+
+                MessageBox.Show(String.Format(
+                    "Warning: New file name invalid from illegal characters {0}, please try again", invalid_chars));
+                return;
+            }
+
             String original_dir = input_textBox.Text;
             String modified_dir = this.modified_name_ConstructFullPath(preview_textBox.Text, original_dir);
 
@@ -76,7 +216,7 @@ namespace DocRename
                 return;
             }
 
-            
+
             try
             {
                 // Attempt to rename the file
@@ -114,106 +254,6 @@ namespace DocRename
 
             return;
         }
-
-        private String modified_name_ConstructFullPath(String modified, String original)
-        {
-            String[] all_tokens = original.Split('\\');
-
-            String file_extension = getFileExtension(all_tokens[all_tokens.Length - 1]);
-
-            String modified_full_path = "";
-
-            for (int i = 0; i < all_tokens.Length - 1; i++)
-                modified_full_path = modified_full_path + all_tokens[i] + "\\";
-
-            modified_full_path = modified_full_path + modified + "." + file_extension;
-
-            return modified_full_path;
-        }
-
-        private String getFileExtension(String filename)
-        {
-            String[] all_tokens = filename.Split('.');
-            return all_tokens[all_tokens.Length - 1];
-        }
-
-
-        private void project_comboBox_TextChanged(object sender, EventArgs e)
-        {
-            this.fields[0] = project_comboBox.Text;
-
-            this.fields_ConstructFullName();
-            return;
-        }
-
-        private void name_comboBox_TextChanged(object sender, EventArgs e)
-        {
-            this.fields[1] = name_comboBox.Text;
-
-            this.fields_ConstructFullName();
-            return;
-        }
-
-        private void version_comboBox_TextChanged(object sender, EventArgs e)
-        {
-            this.fields[2] = version_comboBox.Text;
-
-            this.fields_ConstructFullName();
-            return;
-        }
-
-        private void date_dateTimePicker_ValueChanged(object sender, EventArgs e)
-        {
-            String tmp = date_dateTimePicker.Value.ToString();
-            this.fields[3] = ParserTool.Parser.date_FormatToNumericalValue(tmp);
-
-            this.fields_ConstructFullName();
-
-            return;
-        }
-
-        private void fields_Update(String[] fields)
-        {
-            this.fields = fields;
-
-            project_comboBox.Text = fields[0];
-            name_comboBox.Text = fields[1];
-            version_comboBox.Text = fields[2];
-
-            String date = ParserTool.Parser.date_FormatToDateTimePicker(fields[3]);
-            if (date != null)
-                date_dateTimePicker.Text = date;
-
-            return;
-        }
-
-        private void fields_ConstructFullName()
-        {
-            String output = "";
-            for (int i = 0; i < 4; i++)
-            {
-                if (this.fields[i] != "")
-                {
-                    if (output == "")
-                        output = this.fields[i];
-                    else
-                        output = output + "_" + this.fields[i];
-                }
-            }
-
-            preview_textBox.Text = output;
-            return;
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            ComboBox.ObjectCollection[] data = new ComboBox.ObjectCollection[3];
-            data[0] = project_comboBox.Items;
-            data[1] = name_comboBox.Items;
-            data[2] = version_comboBox.Items;
-
-            MemoryManagementTool.MemoryTool.fields_SaveToFile(data);
-        }
     }
 }
 
@@ -245,7 +285,7 @@ namespace ParserTool
             return Int32.TryParse(token, out int num);
         }
 
-        private static bool isTokenValid(String token)
+        public static bool isTokenValid(String token)
         {
             char[] illegal_chars = Path.GetInvalidFileNameChars();
 

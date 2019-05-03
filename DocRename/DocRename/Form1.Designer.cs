@@ -42,6 +42,7 @@
             this.name_comboBox = new System.Windows.Forms.ComboBox();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.date_dateTimePicker = new System.Windows.Forms.DateTimePicker();
+            this.info_label = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // input_textBox
@@ -124,7 +125,7 @@
             this.output_button.Name = "output_button";
             this.output_button.Size = new System.Drawing.Size(92, 23);
             this.output_button.TabIndex = 11;
-            this.output_button.Text = "Test";
+            this.output_button.Text = "Rename";
             this.output_button.UseVisualStyleBackColor = true;
             this.output_button.Click += new System.EventHandler(this.output_button_Click);
             // 
@@ -198,11 +199,21 @@
             this.date_dateTimePicker.ValueChanged += new System.EventHandler(this.date_dateTimePicker_ValueChanged);
             this.date_dateTimePicker.Enter += new System.EventHandler(this.date_dateTimePicker_ValueChanged);
             // 
+            // info_label
+            // 
+            this.info_label.AutoSize = true;
+            this.info_label.Location = new System.Drawing.Point(12, 171);
+            this.info_label.Name = "info_label";
+            this.info_label.Size = new System.Drawing.Size(52, 13);
+            this.info_label.TabIndex = 18;
+            this.info_label.Text = "info_label";
+            // 
             // docRenameForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(344, 261);
+            this.Controls.Add(this.info_label);
             this.Controls.Add(this.date_dateTimePicker);
             this.Controls.Add(this.name_comboBox);
             this.Controls.Add(this.project_comboBox);
@@ -242,6 +253,7 @@
         private System.Windows.Forms.ComboBox name_comboBox;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.DateTimePicker date_dateTimePicker;
+        private System.Windows.Forms.Label info_label;
     }
 }
 
