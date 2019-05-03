@@ -202,7 +202,7 @@
             // info_label
             // 
             this.info_label.AutoSize = true;
-            this.info_label.Location = new System.Drawing.Point(12, 171);
+            this.info_label.Location = new System.Drawing.Point(12, 173);
             this.info_label.Name = "info_label";
             this.info_label.Size = new System.Drawing.Size(52, 13);
             this.info_label.TabIndex = 18;

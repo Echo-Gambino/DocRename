@@ -36,6 +36,13 @@ namespace DocRename
             List<ComboBox> combo_box = new List<ComboBox> { project_comboBox, name_comboBox, version_comboBox };
             List<String> field;
 
+            // Put the information from data into the combo_box items
+            /* "For each combo box, get data[ x ] (where x is the
+             * index corresponding the the combo box) 
+             * ( e.g. 0 -> project, 1 -> name, 2 -> version )
+             * and add all the strings stored in data[ x ] into
+             * the items of combo box.
+             */
             for (int i = 0; i < 3; i++)
             {
                 field = data[i];
@@ -49,6 +56,22 @@ namespace DocRename
             return;
         }
 
+        /* input_button_Click
+         * 
+         * inputs:
+         *  object     sender
+         *  EventArgs  e
+         * 
+         * returns:
+         *  None
+         * 
+         * Opens a Dialog box to retrieve the selected file path,
+         * put the full path into input_textBox
+         * parse the file name of the selected path into its respective fields
+         * (e.g. Project, Name, Version, Date)
+         * if possible.
+         * 
+         */
         private void input_button_Click(object sender, EventArgs e)
         {
             String filename = "";
@@ -57,17 +80,41 @@ namespace DocRename
             if (openFileDialog.ShowDialog() == DialogResult.OK)
                 input_textBox.Text = openFileDialog.FileName;
 
+            // Extract the filename from the path by splitting the string by '\'
+            // and keeping the last section (which is the file name itself)
             String[] all_tokens = input_textBox.Text.Split('\\');
-
             filename = all_tokens[all_tokens.Length - 1];
 
-            String[] result = ParserTool.Parser.FileName_Parse(filename);
+            // Use the custom made ParserTool to convert the filename into an array of 4 strings
+            // If a given string in the array is "", it is most likely because either the parser
+            // can't fit a filename's section to that field, or the name did not yield enough fields 
+            String[] fields = ParserTool.Parser.FileName_Parse(filename);
 
-            this.fields_Update(result);
+            // Update the 'global' fields variable in the class itself 
+            this.fields_Update(fields);
 
             return;
         }
 
+        /* project_comboBox_TextChanged
+         * 
+         * inputs:
+         *  object     sender
+         *  EventArgs  e
+         * 
+         * returns:
+         *  None
+         * 
+         * Whenever the comboBox detects a change, it will call
+         * this.illegal_character_Check(...) to check if the
+         * text it contains is valid,
+         *      IF the text is valid...
+         *      THEN it will update its corresponding field to this.fields[ x ]
+         *          AND update preview_textBox by calling this.fields_ConstructFullName();
+         *      IF the text is invalid...
+         *      THEN it will return and not perform any changes to fields and preview_textBox
+         * 
+         */
         private void project_comboBox_TextChanged(object sender, EventArgs e)
         {
             String project_text = project_comboBox.Text;
@@ -81,6 +128,25 @@ namespace DocRename
             return;
         }
 
+        /* name_comboBox_TextChanged
+         * 
+         * inputs:
+         *  object     sender
+         *  EventArgs  e
+         * 
+         * returns:
+         *  None
+         * 
+         * Whenever the comboBox detects a change, it will call
+         * this.illegal_character_Check(...) to check if the
+         * text it contains is valid,
+         *      IF the text is valid...
+         *      THEN it will update its corresponding field to this.fields[ x ]
+         *          AND update preview_textBox by calling this.fields_ConstructFullName();
+         *      IF the text is invalid...
+         *      THEN it will return and not perform any changes to fields and preview_textBox
+         * 
+         */
         private void name_comboBox_TextChanged(object sender, EventArgs e)
         {
             String name_text = name_comboBox.Text;
@@ -94,6 +160,25 @@ namespace DocRename
             return;
         }
 
+        /* name_comboBox_TextChanged
+         * 
+         * inputs:
+         *  object     sender
+         *  EventArgs  e
+         * 
+         * returns:
+         *  None
+         * 
+         * Whenever the comboBox detects a change, it will call
+         * this.illegal_character_Check(...) to check if the
+         * text it contains is valid,
+         *      IF the text is valid...
+         *      THEN it will update its corresponding field to this.fields[ x ]
+         *          AND update preview_textBox by calling this.fields_ConstructFullName();
+         *      IF the text is invalid...
+         *      THEN it will return and not perform any changes to fields and preview_textBox
+         * 
+         */
         private void version_comboBox_TextChanged(object sender, EventArgs e)
         {
             String version_text = version_comboBox.Text;
@@ -107,6 +192,24 @@ namespace DocRename
             return;
         }
 
+
+        /* name_comboBox_TextChanged
+         * 
+         * inputs:
+         *  object     sender
+         *  EventArgs  e
+         * 
+         * returns:
+         *  None
+         * 
+         * Whenever the dateTimePicker detects user interaction
+         * (clicking on the calender icon or changing the date)
+         * it will convert its value to string and convert it from
+         * "MM/DD/YYYY HH:MM AM/PM" to "MMDDYYYY"
+         * it uses the new formatted string to be put into its respective field
+         * and updates preview_textBox by calling this.fields_ConstructFullName();
+         * 
+         */
         private void date_dateTimePicker_ValueChanged(object sender, EventArgs e)
         {
             String tmp = date_dateTimePicker.Value.ToString();
@@ -117,25 +220,57 @@ namespace DocRename
             return;
         }
 
+        /* illegal_character_Check
+         * 
+         * input:
+         *  String   str        : The string that will be checked for illegal characters
+         *  ComboBox combo_box  : The combo_box which the method will change its text color
+         * 
+         * return:
+         *  bool     output     : IF true THEN no illegal characters (valid) ELSE illegal characters present (invalid)
+         * 
+         * Determines if the string is valid (no illegal characters present) or not,
+         * also changes the field's combo_box and info_label to reflect the changes.
+         * The changes to the objects in the windows is to help correct the user's mistakes
+         * 
+         */
         private bool illegal_character_Check(String str, ComboBox combo_box)
         {
+            // Begin by initializing the variables so that the result is 
+            // of the outcome: "string valid", so...
+            // combo_box color is Black, info_label is hidden, and output = true
             String color = "#000000"; // Black
             String text = "";
             bool output = true;
 
             if (!ParserTool.Parser.isTokenValid(str))
             {
+                // If string is not valid, then change the variables to where
+                // combo_box color is Red, info_label warns user, and output = false
                 color = "#FF0000"; // Red
                 text = "Field contains illegal character(s), please remove and try again";
                 output = false;
             }
 
+            // Commit changes from variables to the objects in the window
             combo_box.ForeColor = System.Drawing.ColorTranslator.FromHtml(color);
             info_label.Text = text;
 
             return output;
         }
 
+        /* modified_name_ConstructFullPath
+         * 
+         * input:
+         *  String modified : modified filename (only the file name, no path prefix, no extensions)
+         *  String original : original path (has full path and extensions are present)
+         * 
+         * return:
+         *  modified_full_path  : modified file name with original's path prefix and file extension
+         * 
+         * Uses 'original'
+         * 
+         */
         private String modified_name_ConstructFullPath(String modified, String original)
         {
             String[] all_tokens = original.Split('\\');
