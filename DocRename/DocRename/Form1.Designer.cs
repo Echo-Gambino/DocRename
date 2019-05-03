@@ -35,13 +35,14 @@
             this.name_label = new System.Windows.Forms.Label();
             this.date_label = new System.Windows.Forms.Label();
             this.output_button = new System.Windows.Forms.Button();
-            this.result_textBox = new System.Windows.Forms.TextBox();
+            this.preview_textBox = new System.Windows.Forms.TextBox();
             this.title_label = new System.Windows.Forms.Label();
             this.version_comboBox = new System.Windows.Forms.ComboBox();
             this.project_comboBox = new System.Windows.Forms.ComboBox();
             this.name_comboBox = new System.Windows.Forms.ComboBox();
-            this.date_comboBox = new System.Windows.Forms.ComboBox();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.date_dateTimePicker = new System.Windows.Forms.DateTimePicker();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // input_textBox
@@ -120,22 +121,23 @@
             // output_button
             // 
             this.output_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.output_button.Location = new System.Drawing.Point(239, 185);
+            this.output_button.Location = new System.Drawing.Point(239, 225);
             this.output_button.Name = "output_button";
             this.output_button.Size = new System.Drawing.Size(92, 23);
             this.output_button.TabIndex = 11;
-            this.output_button.Text = "button2";
+            this.output_button.Text = "Test";
             this.output_button.UseVisualStyleBackColor = true;
+            this.output_button.Click += new System.EventHandler(this.output_button_Click);
             // 
-            // result_textBox
+            // preview_textBox
             // 
-            this.result_textBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.preview_textBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.result_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.result_textBox.Location = new System.Drawing.Point(12, 186);
-            this.result_textBox.Name = "result_textBox";
-            this.result_textBox.Size = new System.Drawing.Size(221, 22);
-            this.result_textBox.TabIndex = 10;
+            this.preview_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.preview_textBox.Location = new System.Drawing.Point(12, 226);
+            this.preview_textBox.Name = "preview_textBox";
+            this.preview_textBox.Size = new System.Drawing.Size(221, 22);
+            this.preview_textBox.TabIndex = 10;
             // 
             // title_label
             // 
@@ -154,13 +156,11 @@
             this.version_comboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.version_comboBox.FormattingEnabled = true;
-            this.version_comboBox.Items.AddRange(new object[] {
-            "thing",
-            "thing2"});
             this.version_comboBox.Location = new System.Drawing.Point(76, 114);
             this.version_comboBox.Name = "version_comboBox";
             this.version_comboBox.Size = new System.Drawing.Size(256, 21);
             this.version_comboBox.TabIndex = 13;
+            this.version_comboBox.TextChanged += new System.EventHandler(this.version_comboBox_TextChanged);
             // 
             // project_comboBox
             // 
@@ -171,6 +171,7 @@
             this.project_comboBox.Name = "project_comboBox";
             this.project_comboBox.Size = new System.Drawing.Size(256, 21);
             this.project_comboBox.TabIndex = 14;
+            this.project_comboBox.TextChanged += new System.EventHandler(this.project_comboBox_TextChanged);
             // 
             // name_comboBox
             // 
@@ -181,41 +182,51 @@
             this.name_comboBox.Name = "name_comboBox";
             this.name_comboBox.Size = new System.Drawing.Size(256, 21);
             this.name_comboBox.TabIndex = 15;
-            // 
-            // date_comboBox
-            // 
-            this.date_comboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.date_comboBox.FormattingEnabled = true;
-            this.date_comboBox.Location = new System.Drawing.Point(76, 141);
-            this.date_comboBox.Name = "date_comboBox";
-            this.date_comboBox.Size = new System.Drawing.Size(257, 21);
-            this.date_comboBox.TabIndex = 16;
+            this.name_comboBox.TextChanged += new System.EventHandler(this.name_comboBox_TextChanged);
             // 
             // openFileDialog
             // 
             this.openFileDialog.FileName = "openFileDialog";
             // 
+            // date_dateTimePicker
+            // 
+            this.date_dateTimePicker.Location = new System.Drawing.Point(76, 142);
+            this.date_dateTimePicker.Name = "date_dateTimePicker";
+            this.date_dateTimePicker.Size = new System.Drawing.Size(257, 20);
+            this.date_dateTimePicker.TabIndex = 17;
+            this.date_dateTimePicker.ValueChanged += new System.EventHandler(this.date_dateTimePicker_ValueChanged);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(256, 196);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 18;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // docRenameForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(344, 221);
-            this.Controls.Add(this.date_comboBox);
+            this.ClientSize = new System.Drawing.Size(344, 261);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.date_dateTimePicker);
             this.Controls.Add(this.name_comboBox);
             this.Controls.Add(this.project_comboBox);
             this.Controls.Add(this.version_comboBox);
             this.Controls.Add(this.title_label);
             this.Controls.Add(this.output_button);
-            this.Controls.Add(this.result_textBox);
+            this.Controls.Add(this.preview_textBox);
             this.Controls.Add(this.date_label);
             this.Controls.Add(this.name_label);
             this.Controls.Add(this.project_label);
             this.Controls.Add(this.version_label);
             this.Controls.Add(this.input_button);
             this.Controls.Add(this.input_textBox);
-            this.MaximumSize = new System.Drawing.Size(100000, 260);
-            this.MinimumSize = new System.Drawing.Size(360, 260);
+            this.MaximumSize = new System.Drawing.Size(100000, 300);
+            this.MinimumSize = new System.Drawing.Size(360, 300);
             this.Name = "docRenameForm";
             this.Text = "DocRename";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -233,13 +244,14 @@
         private System.Windows.Forms.Label name_label;
         private System.Windows.Forms.Label date_label;
         private System.Windows.Forms.Button output_button;
-        private System.Windows.Forms.TextBox result_textBox;
+        private System.Windows.Forms.TextBox preview_textBox;
         private System.Windows.Forms.Label title_label;
         private System.Windows.Forms.ComboBox version_comboBox;
         private System.Windows.Forms.ComboBox project_comboBox;
         private System.Windows.Forms.ComboBox name_comboBox;
-        private System.Windows.Forms.ComboBox date_comboBox;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
+        private System.Windows.Forms.DateTimePicker date_dateTimePicker;
+        private System.Windows.Forms.Button button1;
     }
 }
 
