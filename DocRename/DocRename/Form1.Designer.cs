@@ -42,7 +42,6 @@
             this.name_comboBox = new System.Windows.Forms.ComboBox();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.date_dateTimePicker = new System.Windows.Forms.DateTimePicker();
-            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // input_textBox
@@ -190,28 +189,20 @@
             // 
             // date_dateTimePicker
             // 
+            this.date_dateTimePicker.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.date_dateTimePicker.Location = new System.Drawing.Point(76, 142);
             this.date_dateTimePicker.Name = "date_dateTimePicker";
             this.date_dateTimePicker.Size = new System.Drawing.Size(257, 20);
             this.date_dateTimePicker.TabIndex = 17;
             this.date_dateTimePicker.ValueChanged += new System.EventHandler(this.date_dateTimePicker_ValueChanged);
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(256, 196);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 18;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.date_dateTimePicker.Enter += new System.EventHandler(this.date_dateTimePicker_ValueChanged);
             // 
             // docRenameForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(344, 261);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.date_dateTimePicker);
             this.Controls.Add(this.name_comboBox);
             this.Controls.Add(this.project_comboBox);
@@ -225,8 +216,8 @@
             this.Controls.Add(this.version_label);
             this.Controls.Add(this.input_button);
             this.Controls.Add(this.input_textBox);
-            this.MaximumSize = new System.Drawing.Size(100000, 300);
-            this.MinimumSize = new System.Drawing.Size(360, 300);
+            this.MaximumSize = new System.Drawing.Size(800, 300);
+            this.MinimumSize = new System.Drawing.Size(360, 260);
             this.Name = "docRenameForm";
             this.Text = "DocRename";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -251,7 +242,6 @@
         private System.Windows.Forms.ComboBox name_comboBox;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.DateTimePicker date_dateTimePicker;
-        private System.Windows.Forms.Button button1;
     }
 }
 

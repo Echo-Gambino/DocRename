@@ -66,11 +66,77 @@ namespace DocRename
 
         private void output_button_Click(object sender, EventArgs e)
         {
-            String filename = preview_textBox.Text;
-            String[] result = ParserTool.Parser.FileName_Parse(filename);
+            String original_dir = input_textBox.Text;
+            String modified_dir = this.modified_name_ConstructFullPath(preview_textBox.Text, original_dir);
 
-            this.fields_Update(result);
+            // Check if the original file exits before copying
+            if (!File.Exists(original_dir))
+            {
+                MessageBox.Show("Warning: Selected path to file to be renamed does not exist, please try again and check for typos");
+                return;
+            }
+
+            
+            try
+            {
+                // Attempt to rename the file
+                File.Move(original_dir, modified_dir);
+            }
+            catch (Exception ex)
+            {
+                // Prompt user with an exception and abort the process
+                MessageBox.Show("Exception: " + ex.Message);
+                return;
+            }
+
+            // Save the fields into the
+            String[] preview_tokens = preview_textBox.Text.Split('_');
+            if ((this.fields[0] == preview_tokens[0]) && (!project_comboBox.Items.Contains(this.fields[0])))
+            {
+                project_comboBox.Items.Add(this.fields[0]);
+            }
+            if (this.fields[1] == preview_tokens[1] && (!name_comboBox.Items.Contains(this.fields[1])))
+            {
+                name_comboBox.Items.Add(this.fields[1]);
+            }
+            if (this.fields[2] == preview_tokens[2] && (!version_comboBox.Items.Contains(this.fields[2])))
+            {
+                version_comboBox.Items.Add(this.fields[2]);
+            }
+
+            ComboBox.ObjectCollection[] data = new ComboBox.ObjectCollection[3];
+
+            data[0] = project_comboBox.Items;
+            data[1] = name_comboBox.Items;
+            data[2] = version_comboBox.Items;
+
+            MemoryManagementTool.MemoryTool.fields_SaveToFile(data);
+
+            return;
         }
+
+        private String modified_name_ConstructFullPath(String modified, String original)
+        {
+            String[] all_tokens = original.Split('\\');
+
+            String file_extension = getFileExtension(all_tokens[all_tokens.Length - 1]);
+
+            String modified_full_path = "";
+
+            for (int i = 0; i < all_tokens.Length - 1; i++)
+                modified_full_path = modified_full_path + all_tokens[i] + "\\";
+
+            modified_full_path = modified_full_path + modified + "." + file_extension;
+
+            return modified_full_path;
+        }
+
+        private String getFileExtension(String filename)
+        {
+            String[] all_tokens = filename.Split('.');
+            return all_tokens[all_tokens.Length - 1];
+        }
+
 
         private void project_comboBox_TextChanged(object sender, EventArgs e)
         {
@@ -102,6 +168,7 @@ namespace DocRename
             this.fields[3] = ParserTool.Parser.date_FormatToNumericalValue(tmp);
 
             this.fields_ConstructFullName();
+
             return;
         }
 
