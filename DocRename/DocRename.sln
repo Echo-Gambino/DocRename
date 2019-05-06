@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocRename", "DocRename\DocR
 EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "SetupProject2", "SetupProject2\SetupProject2.wixproj", "{C2819CBA-B719-4B69-9A13-4FE088DB7AD6}"
 EndProject
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "SetupProject1", "SetupProject1\SetupProject1.wixproj", "{AB659DF6-FC3D-47D2-91DF-262D2A820543}"
+EndProject
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "DocRenameInstaller", "DocRenameInstaller\DocRenameInstaller.wixproj", "{9669261A-D4C3-4A4E-8A2A-BDF74BB38DE4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +33,18 @@ Global
 		{C2819CBA-B719-4B69-9A13-4FE088DB7AD6}.Release|Any CPU.ActiveCfg = Release|x86
 		{C2819CBA-B719-4B69-9A13-4FE088DB7AD6}.Release|x86.ActiveCfg = Release|x86
 		{C2819CBA-B719-4B69-9A13-4FE088DB7AD6}.Release|x86.Build.0 = Release|x86
+		{AB659DF6-FC3D-47D2-91DF-262D2A820543}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{AB659DF6-FC3D-47D2-91DF-262D2A820543}.Debug|x86.ActiveCfg = Debug|x86
+		{AB659DF6-FC3D-47D2-91DF-262D2A820543}.Debug|x86.Build.0 = Debug|x86
+		{AB659DF6-FC3D-47D2-91DF-262D2A820543}.Release|Any CPU.ActiveCfg = Release|x86
+		{AB659DF6-FC3D-47D2-91DF-262D2A820543}.Release|x86.ActiveCfg = Release|x86
+		{AB659DF6-FC3D-47D2-91DF-262D2A820543}.Release|x86.Build.0 = Release|x86
+		{9669261A-D4C3-4A4E-8A2A-BDF74BB38DE4}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{9669261A-D4C3-4A4E-8A2A-BDF74BB38DE4}.Debug|x86.ActiveCfg = Debug|x86
+		{9669261A-D4C3-4A4E-8A2A-BDF74BB38DE4}.Debug|x86.Build.0 = Debug|x86
+		{9669261A-D4C3-4A4E-8A2A-BDF74BB38DE4}.Release|Any CPU.ActiveCfg = Release|x86
+		{9669261A-D4C3-4A4E-8A2A-BDF74BB38DE4}.Release|x86.ActiveCfg = Release|x86
+		{9669261A-D4C3-4A4E-8A2A-BDF74BB38DE4}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
