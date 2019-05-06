@@ -52,7 +52,6 @@ namespace DocRename
                 }
             }
 
-
             return;
         }
 
@@ -191,7 +190,6 @@ namespace DocRename
             this.fields_ConstructFullName();
             return;
         }
-
 
         /* name_comboBox_TextChanged
          * 
@@ -786,7 +784,7 @@ namespace MemoryManagementTool
 
             String output = "";
 
-            int max = all_tokens.Length - 4;
+            int max = all_tokens.Length;
 
             for (int i = 0; i < all_tokens.Length; i++)
             {
@@ -796,6 +794,42 @@ namespace MemoryManagementTool
             }
 
             return output;
+        }
+
+        /* saveFileCheck
+         * 
+         * Argument:
+         *  None
+         * 
+         * Return:
+         *  None
+         *  
+         * Checks if the save file exists,
+         * if not, it creates a new save file,
+         * if there is, it leaves it alone
+         *  
+         */
+        private static void saveFileCheck()
+        {
+            String save_file_path;
+
+            save_file_path = getSaveFileDirectory();
+            save_file_path = save_file_path + '\\' + "memory.txt";
+
+            try
+            {
+                if (File.Exists(save_file_path))
+                    return;
+
+                File.Create(save_file_path);
+            }
+            catch (Exception e)
+            {
+                // Display error message
+                MessageBox.Show("Exception: " + e.Message);
+            }
+
+            return;
         }
 
         /* convert_ObjectCollectionToText
@@ -862,6 +896,9 @@ namespace MemoryManagementTool
          */
         public static void fields_SaveToFile(ComboBox.ObjectCollection[] data)
         {
+            // Check if save file is present, and creates a new save file if not
+            saveFileCheck();
+
             // Construct file path to memory.txt
             String file_dir = getSaveFileDirectory();
             file_dir = file_dir + '\\' + "memory.txt";
@@ -904,6 +941,9 @@ namespace MemoryManagementTool
          */
         public static List<List<String>> fields_LoadFromFile()
         {
+            // Check if save file is present, and creates a new save file if not
+            saveFileCheck();
+
             List<List<String>> list = new List<List<String>>();
 
             String file_dir;
