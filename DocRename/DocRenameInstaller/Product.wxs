@@ -1,19 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Product Id="*" 
+
+  <?define BuildVersion = 1.2.3.4?>
+
+  <!-- define main product -->
+  <Product Id="*" 
            Name="DocRenameInstaller" 
            Language="1033" 
            Version="1.0.0.0" 
            Manufacturer="ExampleManufacturer" 
            UpgradeCode="8ef5c089-8b2c-47d4-8b2a-54084db1bc82">
+
+    <!-- provide package details -->
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
 		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+    
+    <!-- include .cab file into .msi file -->
 		<MediaTemplate EmbedCab="yes"/>
 
-		<Feature Id="ProductFeature" Title="DocRenameInstaller" Level="1">
+    <!-- Set icon.ico to a png image of a duck in DirectoryCopier -->
+    <Icon Id="icon.ico" SourceFile="$(var.DocRename.ProjectDir)\duckicon.ico" />
+    <!-- Use the icon from icon.ico for this installer (shows up in add / remove programs) -->
+    <Property Id="APPPRODUCTICON">icon.ico</Property>
+
+    <!-- Create a basic UI for the installer (built-in for WiX) -->
+    <!-- <UIRef Id="WixUI_Minimal" /> -->
+    <UIRef Id="WixUI_InstallDir" />
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
+
+    <!-- Set installer UI images -->
+    <WixVariable Id="WixUILicenseRtf" Value="$(var.ProjectDir)\resources\License.rtf" />
+    <WixVariable Id="WixUIDialogBmp" Value="$(var.ProjectDir)\resources\Background.bmp" />
+    <WixVariable Id="WixUIBannerBmp" Value="$(var.ProjectDir)\resources\Banner.bmp" />
+
+    <!-- define components, shortcuts, files, etc. for installer -->
+    <Feature Id="ProductFeature" Title="DocRenameInstaller" Level="1">
 			<ComponentGroupRef Id="ProductComponents" />
 		</Feature>
+    
 	</Product>
 
 	<Fragment>
